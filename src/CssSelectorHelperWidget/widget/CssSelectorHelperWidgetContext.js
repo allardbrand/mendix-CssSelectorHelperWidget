@@ -46,14 +46,14 @@
 								node = refNodeList[0];
 								if (this.applyTo == 'Parent' ) {
 									if (node.parentNode) {
-										node.parentNode.setAttribute('cssSelectorHelper', attributeValue);
+										node.parentNode.setAttribute(this.attributeName, attributeValue);
 									} else {
 										console.warn('CssSelectorHelperWidget: No parent node found for CSS selector ' + this.cssSelector);
 									}
 								}
 								else {
 									if (node.previousSibling) {
-										node.previousSibling.setAttribute('cssSelectorHelper', attributeValue);
+										node.previousSibling.setAttribute(this.attributeName, attributeValue);
 									} else {
 										console.warn('CssSelectorHelperWidget: No previous sibling found for CSS selector ' + this.cssSelector);
 									}
@@ -65,15 +65,28 @@
 						} else {
 				
 							if (this.applyTo == 'Parent' ) {
-								if (this.domNode.parentNode) {
-									this.domNode.parentNode.setAttribute('cssSelectorHelper', attributeValue);
+								var parentNode = this.domNode.parentNode;
+
+								if (this.parentLevels > 1) {
+									for (var i = 1; i <= this.parentLevels; i++) { 
+										if (parentNode.parentNode) {
+											parentNode = parentNode.parentNode;
+										} else {
+											parentNode = null;
+											break;
+										}
+									}
+								} 
+
+								if (parentNode) {
+									parentNode.setAttribute(this.attributeName, attributeValue);
 								} else {
 									console.warn('CssSelectorHelperWidget: No parent node found');
 								}
 							}
 							else {
 								if (this.domNode.previousSibling) {
-									this.domNode.previousSibling.setAttribute('cssSelectorHelper', attributeValue);
+									this.domNode.previousSibling.setAttribute(this.attributeName, attributeValue);
 								} else {
 									console.warn('CssSelectorHelperWidget: No previous sibling found');
 								}
